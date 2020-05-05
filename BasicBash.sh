@@ -1,5 +1,19 @@
 #!/bin/bash
 
+
+# functions must be defined top file
+func_name(){
+# positional args 
+arg1=$1   
+arg2=$2
+
+echo "Demo func: $arg1 + $args = $(($arg1 + $arg2))"
+return $(($arg1+$arg2))
+
+}
+
+
+
 <<'COMMENTS'
 ==============================
 1 - Using RST
@@ -30,6 +44,8 @@ Summary of content
 +++++++++++++++++++++++
 
 
+3 - Functions
++++++++++++++++++++++++
 
 The following line ends the comment section.
 COMMENTS
@@ -71,7 +87,7 @@ b=1
 
 echo "Testing if & truth values"
 
-if [[ input = $a  &&  0 = $a ]]
+if (($input == 0 || $input <-10))
 then
   echo "'[0]' is true"
 else
@@ -84,14 +100,38 @@ else
   echo "'[1]' is false"
 fi
 
-if [[ $input -eq $a ]]
+if (($input == 0 || $input <-99))
   then
   echo "Complex conditions: '[ cd 1 ] || [ cd2 ] '"
   echo "If was selected (=0 or less than -99): $input"
-elif [ $input -eq $b ]
+elif (($input == 1))
   then
     echo "Elif was selected: $input"
 else
   echo "Else was selected: $input"
 fi
 
+# calling a function from within a script 
+func_name 5 2
+
+<<'CMTS_FUNCTIONS'
+
+FUNCTIONS
+++++++++++++++++++++++++++++++++++++++++++
+
+Testing basic function syntaxes
+CMTS_FUNCTIONS
+
+<<'cmts_funcvals'
+return values
+**************************************************
+cmts_funcvals
+
+dummy (){
+  a1=$1
+  a2=$2
+  return $(($a1+$a2))
+}
+
+dummy 31 11
+echo "dummy: $?"

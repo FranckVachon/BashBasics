@@ -1,0 +1,79 @@
+#!/bin/bash
+
+<<'CMTS'
+Works. But the conditions at the end are messy.
+It would be best to loop over them with a for loop.
+But I don't have the forloop syntax/usage yet.
+
+Note the use of 0/1 as return values, which allows decent
+comparisons in if conditiosn
+CMTS
+
+is_equilateral() {
+    # checks if a function is equilateral. Expects 3 positional ints
+    # returns 1 if true, 0 if false
+    x=$1
+    y=$2
+    z=$3
+    if (($x==$y && $y==$z));then
+        return 1
+    else
+        return 0
+    fi
+
+}
+
+is_scalene() {
+    # checks if a function is scalene. Expects 3 positional ints
+    # returns 1 if true, 0 if false
+    x=$1
+    y=$2
+    z=$3
+    if (($x!=$y && $y!=$z && $x!=$z));then
+        return 1
+    else
+        return 0
+    fi
+}
+
+is_isocele() {
+    # checks if a function is isocele. Expects 3 positional ints
+    # returns 1 if true, 0 if false
+    x=$1
+    y=$2
+    z=$3
+
+    # if it is either scalene (left cond) or equilat (right cond), it can't be scalene
+    if (($x!=$y && $y!=$z && $x!=$z)) || (($x==$y && $y==$z));then
+        return 0
+    else            # we just assume it's isocele, don't bother with an additional test
+       return 1
+    fi
+}
+
+# read args
+read x
+read y
+read z
+# run checks
+
+# print first check that returns true (1)
+
+is_equilateral $x $y $z
+if (($?==1));then
+    echo "EQUILATERAL"
+else
+    is_scalene $x $y $z
+    if (($?==1));then
+        echo "SCALENE"
+    else
+        is_isocele $x $y $z
+        if (($?==1));then
+            echo "ISOSCELES"
+        fi
+
+    fi
+
+fi
+
+
